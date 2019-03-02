@@ -1,0 +1,429 @@
+<html lang=en>
+
+
+
+<p><strong>Table of Contents:</strong></p>
+
+<ol>            
+<li><a href='#introduction'>Introduction</a></li>
+<li><a href='#what-is-glide'>What is a Glide?</a></li>
+<li><a href='#featuresofglide'>Features of Glide</a></li>
+
+<li>
+An Example:
+<br>
+<ol>
+
+<li><a href='#GlideApp'>Glide Sample App</a></li>
+<li><a href='#dependencies'>Dependencies</a></li>
+<li><a href='#ActivityLayout'>Designing Activity Layout</a></li>
+<li><a href='#normalImage'>Displaying Normal Image</a></li>
+<li><a href='#croppedImage'>Displaying Cropped Image</a></li>
+<li><a href='#lowResImage'>Displaying Low Resolution Image</a></li>
+<li><a href='#errorImage'>Displaying Error Image</a></li>
+<li><a href='#cachedImage'>Displaying Image & disabling cache</a></li>
+<li><a href='#RequestListener'>Request Listeners</a></li>
+
+</ol>
+</ol>
+</li>
+</ul>
+<br>
+<br><br>
+
+
+<h3 id='introduction'>Introduction</h3>
+<br>
+In this blog I'm going to show you how to work with Glide library in Android.
+<br><br><br>
+
+
+<h3 id='what-is-glide'>What is a Glide?</h3>
+<br>
+Glide is an Image Loader Library for Android and is recommended by Google itself. It is developed by bumptech. It provides animated GIF support and handles image loading/caching.
+By default, each image loaded with Glide is cached in the Memory or Disk.
+Before Glide, developers would have to write a TON of boilerplate code to display images, process images, download images and cache images. But, with Glide, all these things are possible with just few lines of code.
+Also, it is open source therefore you can always check out its code <a href="https://github.com/bumptech/glide" target="_blank" rel="nofollow">here</a>.
+<br><br><br>
+
+
+<h3 id='featuresofglide'>Features of Glide</h3>
+<br>
+Glide offers some great features which are discussed in this section
+<ul>
+<li><b>Easily set images to ImageViews</b><br><br>
+You can set images from internet url's, drawables, and many other sources. Glide is very flexible.
+</li>
+<br><br>
+<li><b>Animated GIF Decoding</b><br><br>
+Glide supports loading of animated gifs and you can decode them as Bitmap to load it as a still image 
+or you can load it as a gif.
+</li>
+<br><br>
+<li><b>Thumbnail support</b><br><br>
+Glide supports the feature of thumbnail. This feature basically loads the blurred image into the view as 
+a thumbnail so that user don't need to see the loading indicator, and when the original image is ready to be displayed, it display it in a view. 
+</li>
+<br><br>
+<li><b>Lifecycle integration</b><br><br>
+Requestes made with Glide are lifecycle aware which means that requests are paused 
+in onPause() method to avoid battery drainage and started in onStart() method.
+</li>
+<br><br>
+<li><b>Caching</b><br><br>
+Glide supports caching while loading the image. By default, when image is loaded, it is cached in 
+the memory and disk so that when user tries to load the same image, then it is loaded from the memory
+instead of again fetching it from the url. 
+</li>
+<br><br>
+<li><b>Transformations</b><br><br>
+Glide supports some built in transformations like circleCrop, fitCenter, centerCrop, etc.
+</li>
+<br><br>
+</ul>
+Enough of theory, now Let's begin the coding!!!
+<br><br><br>
+
+
+<h3 id='GlideApp'>Glide Sample App</h3>
+<br>
+Now, Let's dive into the code. We will build the Simple App which contains some 
+images showing different features available in Glide.
+<br><br>
+<img class="img-fluid text-center" src = "http://127.0.0.1:8000/media/blog/22/demo.png" >
+<br><br>
+
+Let's begin the coding!!!
+<br><br><br>
+
+
+<h3 id='dependencies'>Dependencies</h3>
+<br>
+Open build.gradle (Module:app) and add the following Glide dependency.
+<br><br>
+<script src="https://gist.github.com/mohak1283/36be49c9a8fd373e0f79072b229afe57.js"></script>
+<br>
+Make sure you have the latest version of dependencies. You can check the latest version <a href="https://github.com/bumptech/glide" target = "_blank" rel = "nofollow">here</a>
+<br><br><br>
+
+
+<h3 id='ActivityLayout'>Designing MainActivity Layout</h3>
+<br>
+Add the following code in your activity_main.xml file. 
+This layout contains combination of LinearLayouts to display the image in either vertical
+orientation or in horizontal orientation<br><br>
+<script src="https://gist.github.com/mohak1283/e2fc6561571804df7d702a4ae94694cd.js"></script>
+<br><br><br>
+
+
+<h3 id='normalImage'>Displaying Normal Image</h3>
+<br>
+In this section, we will simply display the image from the url without customizing it.<br><br>
+<ul>
+<li>
+First, Declare the ImageView object inside the MainActivity class and find the reference of that image
+in the onCreate() method using findViewById() method.<br><br>
+<script src="https://gist.github.com/mohak1283/fa30ae8fcca035a5847b7ac6f6dd5e95.js"></script>
+</li>
+<li>
+<p> Now, Load the image from the url and display it in the first ImageView. </p>
+<p> In the below code, we are just calling the load() method of Glide library and passing the url of the image as a parameter to it and 
+Finally we are setting that image into the first ImageView using into() method inside the OnCreate() method. </p>
+<br><br>
+<script src="https://gist.github.com/mohak1283/0731722fd9323321fc84507fc2f8d016.js"></script>
+</li>
+</ul>
+Current state of the app : <br>
+<div class="row  justify-content-center">
+  <div class=" col-md-4 col-md-offset-4">
+    <img class="img-fluid text-center" src = "C:\Users\Manik\Desktop\glide images\normal Image.png">
+  </div>
+</div>
+<br><br><br>
+
+
+<h3 id='croppedImage'>Displaying Cropped Image</h3>
+<br>
+In this section, we will display an Image with some cropping transformation. We will apply 
+centerCropping and circleCropping to the Image. Before you start, 
+you need to first understand what RequestOptions in Glide are. <br><br>
+<b>RequestOptions : </b> RequestOptions is basically a class defined in Glide library which provides several
+methods to customize the image you are fetching from the url.
+<br><br> 
+<ul>
+<li><b>Center Cropped Image : </b>
+<br><br>
+This part we'll be focussing on displaying the image with center cropped transformation. 
+<br><br>
+<ul>
+<li>
+First, Declare the ImageView object inside the MainActivity class and find the reference of that image
+in the onCreate() method using findViewById() method.<br><br>
+<script src="https://gist.github.com/mohak1283/76622cd229550b1d3c69894591b57bf6.js"></script>
+</li>
+<li>
+<p>Now, Load the image from the url and display it in the second ImageView. </p>
+<p>In the below code, we 
+are calling the load() method of Glide and passing the url of the image as a parameter to it 
+and we are applying the RequestOptions directly in a RequestBuilder without the generated API and calling centerCrop() method, which basically 
+scales the image such that both the x and y dimensions are greater than or equal to the view
+and centers the image in a view. </p>
+<br><br>
+<script src="https://gist.github.com/mohak1283/b82b49db2c075046f40aba8df9ac10fb.js"></script>
+</li>
+</ul>
+</li>
+Current state of the app : <br>
+<div class="row  justify-content-center">
+  <div class=" col-md-4 col-md-offset-4">
+    <img class="img-fluid text-center" src = "C:\Users\Manik\Desktop\glide images\center cropped image.png">
+  </div>
+</div>
+<br><br>
+
+<li><b>Circle Cropped Image : </b>
+<br><br>
+This part we'll be focussing on displaying the image with cirlce cropped transformation. 
+<br><br>
+<ul>
+<li>
+First, Declare the ImageView object inside the MainActivity class and find the reference of that image
+in the onCreate() method using findViewById() method.<br><br>
+<script src="https://gist.github.com/mohak1283/3f714dc11515f9ed7ea580dd965f7a5c.js"></script>
+</li>
+<li>
+Now, Load the image from the url and display it in the third ImageView. In the below code, we 
+are calling the load() method and calling circleCrop() method, which basically 
+crops the image and transforms it into a cirlce.
+<br><br>
+<script src="https://gist.github.com/mohak1283/a095954bb522f6bd5ea46092aef73735.js"></script>
+</li>
+</ul>
+</li>
+Current state of the app : <br>
+<div class="row  justify-content-center">
+  <div class=" col-md-4 col-md-offset-4">
+    <img class="img-fluid text-center" src = "C:\Users\Manik\Desktop\glide images\circle cropped image.png">
+  </div>
+</div>
+</ul>
+<br><br><br>
+
+<h3 id='lowResImage'>Displaying Low Resolution Image</h3>
+<br>
+In this section, we will display the low resolution image using override() method.<br><br>
+<ul>
+<li>
+First, Declare the ImageView object inside the MainActivity class and find the reference of that image
+in the onCreate() method using findViewById() method.<br><br>
+<script src="https://gist.github.com/mohak1283/9274174929618dd404026079141f1b5b.js"></script>
+</li>
+<li>
+<p>Now, Load the image from the url and display it in the fourth ImageView. </p>
+<p>In the below code, we 
+are loading the image using load() method. After that,
+we are calling override() method which takes two parameters - width & height. In this case, we are 
+passing 50 as width and 50 as height which results in displaying the low resolution image
+Finally we are setting that image into the fourth ImageView. </p>
+<br><br>
+<script src="https://gist.github.com/mohak1283/2b08d0dd53594b0e84e50eb69285d4d7.js"></script>
+</li>
+</ul>
+Current state of the app : <br>
+<div class="row  justify-content-center">
+  <div class=" col-md-4 col-md-offset-4">
+    <img class="img-fluid text-center" src = "C:\Users\Manik\Desktop\glide images\low res image.png">
+  </div>
+</div>
+<br><br><br>
+
+<h3 id='errorImage'>Displaying Error Image</h3>
+<br>
+In this section, we will display the error image using error() method. This method gets called 
+when there occurs some error fetching the original image from the url.<br><br>
+<ul>
+<li>
+First, Declare the ImageView object inside the MainActivity class and find the reference of that image
+in the onCreate() method using findViewById() method.<br><br>
+<script src="https://gist.github.com/mohak1283/d80c4cd15361451498d809b732acba75.js"></script>
+</li>
+<li>
+<p> Now, Load the image from the url and display it in the fifth ImageView. </p>
+<p> In the below code, we 
+are loading the image using load() method. After that,
+we are calling error() method and passing the reference of errorImage which I have downloaded 
+in the drawable folder as its parameter. You can download the error image from <a href="https://github.com/mohak1283/GlideSample/blob/master/app/src/main/res/drawable/errorimage.png" target="_blank" rel="nofollow">here</a>.
+</p>
+<p>Finally set the image in the ImageView. 
+This section of code means that first Glide will try to fetch the image from the given url and 
+if it encounters some error fetching the image, then it will load the errorImage. </p>
+<br><br>
+<script src="https://gist.github.com/mohak1283/3bbd6888c8f7e7f4cdc4bfb9a5dd3d5c.js"></script>
+</li>
+</ul>
+Current state of the app : <br><br>
+First image indicates that when the internet connection is off, then the error image is displayed, then
+after that turn on the internet and now the image will be loaded from the internet as shown in Figure 2
+and after that again turn off the internet, now, you will notice that still image is displaying
+in the imageview because previously when image is loaded it is cached in the memory or disk therefore in 
+this case, image is loaded from cache as shown in Figure 3.<br><br>
+<!-- <div style="display:flex">
+     <div style="flex:1;padding-right:5px;">
+          <img class="img-fluid text-center" src = "C:\Users\Manik\Desktop\glide images\error image1.png" "height="400" width="200">
+     </div>
+     <div style="flex:1;padding-left:5px;">
+          <img class="img-fluid text-center" src = "C:\Users\Manik\Desktop\glide images\error image2.png" "height="400" width="200">
+     </div>
+	  <div style="flex:1;padding-left:5px;">
+          <img class="img-fluid text-center" src = "C:\Users\Manik\Desktop\glide images\error image3.png" "height="400" width="200">
+     </div>
+</div> -->
+<div class="d-flex justify-content-center">
+     <div style="flex-column flex:1;padding-right:5px;">
+          <p class="text-center">Network OFF</p>
+          <img class="img-fluid text-center" src = "http://127.0.0.1:8000/media/blog/29/error_image1.png" "height="400" width="200">
+     </div>
+     <div style="flex-column flex:1;padding-left:5px;">
+           <p class="text-center">Network ON</p>
+          <img class="img-fluid text-center" src = "http://127.0.0.1:8000/media/blog/29/error_image2.png" "height="400" width="200">
+     </div>
+	  <div style="flex-column flex:1;padding-left:5px;">
+          <p class="text-center">Network ON</p>
+          <img class="img-fluid text-center" src = "http://127.0.0.1:8000/media/blog/29/error_image3.png" "height="400" width="200">
+     </div>
+</div>
+<br><br><br>
+
+
+<h3 id='cachedImage'>Displaying Image & disabling cache</h3>
+<br>
+In this section, we will display an Image from the url and we will disable the caching option here.
+As metioned in the Introduction section, that each image loaded with Glide is cached in the memory or disk
+by default, therefore, we will see how to disable this option here. 
+<ul>
+<li><b>Normal Image : </b>
+<br><br>
+In this part, we will fetch a simple image and disable caching option.
+<br><br>
+<ul>
+<li>
+First, Declare the ImageView object inside the MainActivity class and find the reference of that image
+in the onCreate() method using findViewById() method.<br><br>
+<script src="https://gist.github.com/mohak1283/7350be6ac28c2338bfca246938349159.js"></script>
+</li>
+<li>
+Now, Load the image from the url and display it in the ImageView. In the below code, we 
+are calling the load() method and passing the url of the image as a parameter to it 
+and calling two methods here : <br><br>
+<ul>
+<li><b>skipMemoryCache() : </b> 
+<br><br>
+This method takes a boolean parameter indicating that whether to skip the memory cache or not. 
+In this case, we are passing <b>false</b> as its parameter which means that image will not be cached in the memory.
+Everytime, it will fetch the image from the url.<br><br>
+</li>
+<li><b>diskCacheStrategy() : </b> 
+<br><br>
+This method is used to tell whether the image should be saved in disk cache or not.
+In this case, we are passing <b>DiskCacheStrategy.NONE</b> as its parameter which means that image will not be cached in the disk.
+Everytime, it will fetch the image from the url.
+</li>
+<br><br>
+<script src="https://gist.github.com/mohak1283/207e70c4a585783bd9a1685952b7dc43.js"></script>
+</li>
+</ul>
+</li>
+Current state of the app : <br><br>
+First image indicates that when the internet connection is off, then the error image is displayed, then
+after that, turn on the internet and now the image will be loaded from the internet as shown in Figure 2
+and after that, again turn off the internet, now, you will notice now the image will not
+be displayed in the imageView because we are disabling the cache option here, therefore, everytime
+the image is fetched from the url.<br><br>
+
+<div class="d-flex justify-content-center">
+     <div style="flex-column flex:1;padding-right:5px;">
+          <p class="text-center">Network OFF</p>
+          <img class="img-fluid text-center" src = "C:\Users\Manik\Desktop\glide images\not cached image1.png" "height="400" width="200">
+     </div>
+     <div style="flex-column flex:1;padding-left:5px;">
+           <p class="text-center">Network ON</p>
+          <img class="img-fluid text-center" src = "C:\Users\Manik\Desktop\glide images\not cached image2.png" "height="400" width="200">
+     </div>
+	  <div style="flex-column flex:1;padding-left:5px;">
+          <p class="text-center">Network ON</p>
+          <img class="img-fluid text-center" src = "C:\Users\Manik\Desktop\glide images\not cached image3.png" "height="400" width="200">
+     </div>
+</div>
+<br><br>
+</ul>
+<br><br><br>
+
+<h3 id='RequestListener'>Request Listener</h3>
+<br>
+In this section, we will fetch a simple image and disable caching option and also we will listen to the 
+image request so that when image is loaded or when it is failed, 
+then we will perform some action. 
+<br><br>
+<ul>
+<li>
+First, Declare the ImageView object inside the MainActivity class and find the reference of that image
+in the onCreate() method using findViewById() method.<br><br>
+<script src="https://gist.github.com/mohak1283/7ad80181cc5b48c7e0d45b9ac554a0cb.js"></script>
+</li>
+<li>
+<p>Now, Load the image from the url and display it in the third ImageView. </p>
+<p>In the below code, we 
+are calling the load() method and 
+calling skipMemoryCache() and diskCacheStrategy() methods to disable the caching of this 
+image and another method we are calling here is <b>placeholder()</b> method, which basically indicates
+that when the image is loading, during that process, it will show the image which is passed 
+as its parameter. Finally, we are calling <b>listener()</b> method, and initializing the RequestListener()
+which results in overriding of two methods : </p>
+<ul>
+<li><b>onLoadFailed() : </b> 
+<br><br>
+This method is called when the image loading has failed due to some reasons like no internet connection, etc.
+In this method, we are setting the visibility of the progressBar to INVISIBLE so that it just
+vanished off from the screen, when image loading is failed.<br><br>
+</li>
+<li><b>onResourceReady() : </b> 
+<br><br>
+This method is called when the image loading is successfull.
+In this method, we are setting the visibility of the progressBar to INVISIBLE so that it just
+vanished off from the screen, when image is successfully loaded.
+</li>
+</li>
+</ul>
+<br><br>
+<script src="https://gist.github.com/mohak1283/8d2cc9262e642f3fe3d037d618c49d38.js"></script>
+Current state of the app : <br><br>
+First image indicates that when the image is loading from the internet, during that process, placeholder
+iamge and progressBar is being displayed and Figure 2 shows that when the image is loaded from 
+the internet then it is displayed in the imageview and progressBar and placeholder image vanishes
+off from the screen. 
+<br><br>
+<div class="d-flex justify-content-center">
+     <div style="flex-column flex:1;padding-right:5px;">
+          <p class="text-center">Loading Image</p>
+          <img class="img-fluid text-center" src = "C:\Users\Manik\Desktop\glide images\last image1.png" "height="400" width="200">
+     </div>
+     <div style="flex-column flex:1;padding-left:5px;">
+           <p class="text-center">Image Loaded</p>
+          <img class="img-fluid text-center" src = "C:\Users\Manik\Desktop\glide images\last image2.png" "height="400" width="200">
+     </div>
+</div>
+<br><br><br>
+
+ 
+
+That's All! Happy Coding!
+<br><br><br>
+
+The complete code is available <a href="https://github.com/mohak1283/GlideSample" target="_blank" rel="nofollow">here</a>.
+<br><br><br>
+
+
+
+
+
+</html>
